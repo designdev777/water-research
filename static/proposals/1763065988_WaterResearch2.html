@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TerraCarbon | Soil Intelligence Platform</title>
+    <style>
+        :root {
+            --primary: #2a5934;
+            --secondary: #7bb35e;
+            --light: #f4f7f0;
+            --dark: #1a2a1e;
+            --accent: #d4af37;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .tagline {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: var(--dark);
+            position: sticky;
+            top: 120px;
+            z-index: 99;
+        }
+        nav a {
+            color: white;
+            padding: 0.8rem 1.2rem;
+            text-decoration: none;
+            text-align: center;
+            flex: 1;
+            font-weight: 500;
+        }
+        nav a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        section {
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+        h3 {
+            color: var(--dark);
+            margin: 1.5rem 0 1rem 0;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        .collapsible {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .collapsible summary {
+            padding: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            list-style: none;
+            position: relative;
+        }
+        .collapsible summary::-webkit-details-marker {
+            display: none;
+        }
+        .collapsible summary:after {
+            content: '+';
+            position: absolute;
+            right: 1.2rem;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .collapsible[open] summary:after {
+            transform: rotate(45deg);
+        }
+        .collapsible-content {
+            padding: 0 1.2rem 1.2rem 1.2rem;
+            border-top: 1px solid #eee;
+        }
+        .flowchart {
+            width: 100%;
+            max-width: 600px;
+            margin: 1.5rem auto;
+            display: block;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .tab-container {
+            margin: 1.5rem 0;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--primary);
+        }
+        .tab-button {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            opacity: 0.7;
+            flex: 1;
+            text-align: center;
+        }
+        .tab-button.active {
+            opacity: 1;
+            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            margin-bottom: -2px;
+        }
+        .tab-content {
+            display: none;
+            padding: 1rem 0;
+            animation: fadeIn 0.5s;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .roi-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-top: 4px solid var(--accent);
+        }
+        .roi-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+        .contact-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 400px;
+        }
+        .contact-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--secondary);
+        }
+        .contact-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        .contact-card p {
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0.5rem 0;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .btn-contact {
+            background: linear-gradient(to right, var(--accent), #e8c44d);
+            color: var(--dark);
+        }
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: var(--dark);
+            color: white;
+            margin-top: 2rem;
+        }
+        .confidential {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TerraCarbon</h1>
+        <p class="tagline">From Soil Data to Sovereign Assets</p>
+    </header>
+
+    <nav>
+        <a href="#thesis">Thesis</a>
+        <a href="#plan">Plan</a>
+        <a href="#roi">ROI</a>
+    </nav>
+
+    <section id="executive">
+        <h2>Executive Summary</h2>
+        <p><strong>TerraCarbon</strong> is a soil intelligence platform that transforms low-cost sensor data into high-value carbon and agricultural insights. Our proprietary algorithms, validated by peer-reviewed science, quantify soil health and predict carbon sequestration potential with 90% lower cost than incumbent methods.</p>
+        <p><strong>The Ask:</strong> £10,000 seed funding to deploy 10 pilot nodes in Tanzania, generating the validation data required for a £500,000 pre-seed round and a subsequent government/private license model targeting 50x ROI.</p>
+    </section>
+
+    <section id="thesis">
+        <h2>The Investment Thesis</h2>
+
+        <div class="collapsible">
+            <summary>The Problem: A $200B Blind Spot</summary>
+            <div class="collapsible-content">
+                <p>Governments and corporations are committing billions to carbon sequestration and regenerative agriculture, but they lack the cheap, verifiable data to:</p>
+                <ul>
+                    <li><strong>Price Carbon Accurately:</strong> Current soil carbon measurement can cost >$10/hectare, making smallholder projects unviable.</li>
+                    <li><strong>Verify Regenerative Claims:</strong> "Greenwashing" is rampant due to a lack of transparent, real-time soil health data.</li>
+                    <li><strong>Deploy Climate Finance Efficiently:</strong> Funds are allocated based on models, not ground-truth data, leading to wasted capital.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="collapsible">
+            <summary>The Solution: Proprietary Soil Intelligence</summary>
+            <div class="collapsible-content">
+                <p>We leverage a breakthrough scientific insight: <strong>Soil CO₂ respiration dynamics are a primary indicator of overall soil health and carbon flux.</strong> Our platform combines:</p>
+                <ul>
+                    <li><strong>Hardware:</strong> Ruggedized, low-power sensor nodes measuring CO₂, O₂, moisture, and temperature at multiple depths.</li>
+                    <li><strong>Analytics:</strong> Proprietary algorithms that translate gas fluxes into actionable metrics (Carbon Sequestration Score, Microbial Activity Index, Drought Resilience Metric).</li>
+                    <li><strong>Satellite Integration:</strong> Fuses ground data with free satellite (NDVI) for scalable verification.</li>
+                </ul>
+                <p><strong>Our Unique Advantage:</strong> We measure the <em>process</em> (respiration), not just the <em>state</em> (carbon stock), allowing for predictive insights and earlier intervention.</p>
+            </div>
+        </div>
+
+        <div class="collapsible">
+            <summary>The Seed-to-Scale Strategy</summary>
+            <div class="collapsible-content">
+                <p>The £10,000 seed is the critical first step in a de-risked, capital-efficient path to a high-margin SaaS and licensing business.</p>
+                <img src="https://i.imgur.com/7Fp0p0a.png" alt="Seed to Scale Strategy Flowchart" class="flowchart">
+                <p><em>Our capital-efficient roadmap from proof-of-concept to a dominant market position.</em></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="plan">
+        <h2>The £10,000 Deployment Plan</h2>
+        <p>This capital is allocated to achieve one goal: <strong>Generate undeniable validation data to secure a £500k pre-seed round.</strong></p>
+
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab(event, 'Budget')">Budget Allocation</button>
+                <button class="tab-button" onclick="openTab(event, 'Milestones')">Key Milestones</button>
+            </div>
+
+            <div id="Budget" class="tab-content active">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th>Cost (£)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Sensor Node Development</strong></td>
+                                <td>Parts & assembly for 10 ruggedized nodes (CO₂, O₂, Temp, Moisture)</td>
+                                <td>4,000</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pilot Deployment (Tanzania)</strong></td>
+                                <td>Site selection, logistics, local steward training & stipends (6 months)</td>
+                                <td>3,500</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Data Platform (MVP)</strong></td>
+                                <td>Cloud storage, basic dashboard, algorithm development</td>
+                                <td>1,500</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Validation & Reporting</strong></td>
+                                <td>Data analysis, report generation for investors</td>
+                                <td>1,000</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">TOTAL</td>
+                                <td></td>
+                                <td style="font-weight: bold;">10,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="Milestones" class="tab-content">
+                <ul>
+                    <li><strong>Month 1-2:</strong> Hardware finalized. 5 nodes deployed in paired sites (Miombo Woodland vs. Farm).</li>
+                    <li><strong>Month 3-4:</strong> Data stream established. MVP dashboard live. Initial correlations between sensor data and satellite NDVI confirmed.</li>
+                    <li><strong>Month 5-6:</strong> Full dataset captured over a rainy season. "Birch Effect" and differential land-use responses quantified. Investor report finalized.</li>
+                    <li><strong>Month 7:</strong> £500k pre-seed round launched with hard data in hand.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="roi">
+        <h2>Path to 50x Return & Exit Strategy</h2>
+
+        <div class="roi-grid">
+            <div class="roi-card">
+                <h4>Phase 1: SaaS Platform</h4>
+                <p><strong>Revenue Stream:</strong> Subscription fees from Agribusinesses & Carbon Project Developers.</p>
+                <p><strong>Market:</strong> $5/hectare/year for monitoring 1M hectares = <strong>$5M ARR.</strong></p>
+            </div>
+            <div class="roi-card">
+                <h4>Phase 2: Government License</h4>
+                <p><strong>Revenue Stream:</strong> One-time license sale for national soil carbon monitoring.</p>
+                <p><strong>Example:</strong> License to Tanzanian Ministry of Agriculture. Estimated value: <strong>$2-5M.</strong></p>
+            </div>
+            <div class="roi-card">
+                <h4>Phase 3: Corporate Acquisition</h4>
+                <p><strong>Exit Target:</strong> Acquisition by a major player (e.g., Bayer Crop Science, Indigo Ag, Planet Labs).</p>
+                <p><strong>Valuation:</strong> Projected valuation at $50-100M within 5-7 years.</p>
+            </div>
+        </div>
+
+        <h3>Return on a £10,000 Seed Investment</h3>
+        <p>Assuming a standard dilution curve, a £10,000 investment for a 5% seed stake would be worth:</p>
+        <ul>
+            <li><strong>At Government License Sale (Pessimistic):</strong> £200,000 - £500,000 (20x - 50x)</li>
+            <li><strong>At Corporate Acquisition (Optimistic):</strong> £2.5M - £5M (250x - 500x)</li>
+        </ul>
+        <p><strong>The £10,000 seed is the key that unlocks this entire value chain by de-risking the core technology.</strong></p>
+    </section>
+
+    <section id="contact">
+        <h2>Next Steps</h2>
+        <p>We are seeking strategic seed investors who understand the convergence of AgTech, Climate Tech, and Data. Let's build the definitive soil intelligence platform together.</p>
+
+        <div class="contact-card">
+            <!-- Placeholder for a headshot -->
+            <div style="width:100px; height:100px; background-color:#ccc; border-radius:50%; margin:0 auto 1rem auto;"></div>
+            <h3>Dr. [Your Name]</h3>
+            <p>Project Lead, TerraCarbon</p>
+            <p>[Your Email]</p>
+            <p>+[Your Phone Number]</p>
+            <a href="#" class="btn btn-contact" id="addContactBtn">Add to Contacts</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>TerraCarbon | Confidential Investment Memorandum</p>
+        <p class="confidential">This document contains proprietary and confidential information. Unauthorized distribution is prohibited.</p>
+    </footer>
+
+    <script>
+        // Function for Tabs
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Simple "Add to Contacts" simulation (actual implementation requires a vCard file)
+        document.getElementById('addContactBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Contact details saved. In a full implementation, this would download a vCard (.vcf) file.');
+            // window.location.href = 'path/to/terracarbon-contact.vcf'; // Uncomment with actual vCard
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetSection.offsetTop - 130, // Offset for sticky header
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

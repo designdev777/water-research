@@ -1,0 +1,124 @@
+package main
+
+import (
+    "log"
+    "net/http"
+    "strings"
+    "time"
+
+    "github.com/mmcdole/gofeed"
+)
+
+type Fetcher struct {
+    Sources []string
+    Client  *http.Client
+    Parser  *gofeed.Parser
+}
+
+func NewFetcher(sources []string) *Fetcher {
+    return &Fetcher{
+        Sources: sources,
+        Client: &http.Client{
+            Timeout: 15 * time.Second,
+        },
+        Parser: gofeed.NewParser(),
+    }
+}
+
+func (f *Fetcher) FetchAndStore() error {
+    for _, src := range f.Sources {
+        log.Printf("fetching RSS feed: %s", src)
+        
+        req, err := http.NewRequest("GET", src, nil)
+        if err != nil {
+            log.Printf("error creating request for %s: %v", src, err)
+            continue
+        }
+        
+        req.Header.Set("User-Agent", "WaterResearchBot/1.0 (+research@example.com)")
+        
+        resp, err := f.Client.Do(req)
+        if err != nil {
+            log.Printf("error fetching %s: %v", src, err)
+            continue
+        }
+        defer resp.Body.Close()
+
+        if resp.StatusCode != 200 {
+            log.Printf("non-200 status for %s: %d", src, resp.StatusCode)
+            continue
+        }
+
+        feed, err := f.Parser.Parse(resp.Body)
+        if err != nil {
+            log.Printf("error parsing RSS feed %s: %v", src, err)
+            continue
+        }
+
+        log.Printf("parsed feed: %s (%d items)", feed.Title, len(feed.Items))
+        
+        for _, item := range feed.Items {
+            if err := f.processFeedItem(item, src, feed.Title); err != nil {
+                log.Printf("error processing item: %v", err)
+            }
+        }
+        
+        // Be polite - delay between feeds
+        time.Sleep(1 * time.Second)
+    }
+    return nil
+}
+
+func (f *Fetcher) processFeedItem(item *gofeed.Item, sourceURL string, sourceName string) error {
+    // Skip if no title or URL
+    if item.Title == "" || item.Link == "" {
+        return nil
+    }
+
+    // Filter for water/technology related content
+    title := strings.ToLower(item.Title)
+    description := strings.ToLower(item.Description)
+    
+    waterKeywords := []string{"water", "hydroponic", "aquatic", "filtration", "purification", 
+                              "wastewater", "desalination", "irrigation", "hydrology"}
+    
+    hasWaterKeyword := false
+    for _, keyword := range waterKeywords {
+        if strings.Contains(title, keyword) || strings.Contains(description, keyword) {
+            hasWaterKeyword = true
+            break
+        }
+    }
+    
+    // Optional: remove this filter to get all items
+    if !hasWaterKeyword {
+        return nil
+    }
+
+    dbItem := &Item{
+        Title:   item.Title,
+        Summary: item.Description,
+        URL:     item.Link,
+        Source:  sourceName,
+    }
+
+    // Handle published date
+    if item.PublishedParsed != nil {
+        dbItem.PublishedAt.Valid = true
+        dbItem.PublishedAt.Time = *item.PublishedParsed
+    } else if item.UpdatedParsed != nil {
+        dbItem.PublishedAt.Valid = true
+        dbItem.PublishedAt.Time = *item.UpdatedParsed
+    }
+
+    if err := InsertItem(dbItem); err != nil {
+        // This is expected for duplicate URLs due to UNIQUE constraint
+        if !strings.Contains(err.Error(), "UNIQUE constraint failed") {
+            return err
+        }
+    } else {
+        log.Printf("inserted: %s", item.Title)
+    }
+    
+    return nil
+}

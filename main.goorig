@@ -1,0 +1,99 @@
+package main
+
+import (
+    "context"
+    "log"
+    "net/http"
+    "os"
+    "os/signal"
+    "time"
+
+    "github.com/robfig/cron/v3"
+)
+
+func main() {
+    // initialize DB (creates file research.db in cwd)
+    if err := InitDB("research.db"); err != nil {
+        log.Fatalf("InitDB error: %v", err)
+    }
+    defer DB.Close()
+
+    // Create fetcher with WASH-focused RSS feeds
+    f := NewFetcher([]string{
+        "https://www.watertechonline.com/feed/",
+        "https://www.sciencedaily.com/rss/earth_climate/water.xml",
+        "https://www.wri.org/insights/rss",
+    })
+
+    // run an initial fetch at startup
+    if err := f.FetchAndStore(); err != nil {
+        log.Printf("initial fetch error: %v", err)
+    }
+
+    // Start cron for scheduled tasks
+    c := cron.New(cron.WithChain())
+    
+    // Daily fetch at 02:00
+    _, err := c.AddFunc("0 2 * * *", func() {
+        log.Println("[cron] running daily fetch")
+        if err := f.FetchAndStore(); err != nil {
+            log.Printf("[cron] fetch error: %v", err)
+        }
+    })
+    if err != nil {
+        log.Fatalf("cron add error: %v", err)
+    }
+    
+    // Archive old items (older than 30 days) every Sunday at 03:00
+    _, err = c.AddFunc("0 3 * * 0", func() {
+        log.Println("[cron] archiving old items")
+        if err := ArchiveOldItems(30, "Auto-archive: older than 30 days"); err != nil {
+            log.Printf("[cron] archive error: %v", err)
+        } else {
+            log.Println("[cron] archive completed")
+        }
+    })
+    if err != nil {
+        log.Fatalf("cron archive add error: %v", err)
+    }
+    
+    c.Start()
+    defer c.Stop()
+
+    // Setup HTTP server and handlers
+    mux := http.NewServeMux()
+    mux.HandleFunc("/", handleIndex)
+    mux.HandleFunc("/item", handleItem)
+    mux.HandleFunc("/add", handleAdd)
+    mux.HandleFunc("/trigger-fetch", triggerFetchHandler(f))
+    mux.HandleFunc("/trigger-archive", triggerArchiveHandler) // New endpoint
+    mux.HandleFunc("/archived", handleArchived) // New endpoint
+
+    srv := &http.Server{
+        Addr:         ":8080",
+        Handler:      loggingMiddleware(mux),
+        ReadTimeout:  10 * time.Second,
+        WriteTimeout: 10 * time.Second,
+        IdleTimeout:  120 * time.Second,
+    }
+
+    // graceful shutdown on Ctrl+C
+    stop := make(chan os.Signal, 1)
+    signal.Notify(stop, os.Interrupt)
+
+    go func() {
+        log.Println("server starting on http://localhost:8080")
+        if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+            log.Fatalf("listen: %v", err)
+        }
+    }()
+
+    <-stop
+    log.Println("shutting down server...")
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+    if err := srv.Shutdown(ctx); err != nil {
+        log.Fatalf("server shutdown: %v", err)
+    }
+    log.Println("server stopped")
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WASH Investment Research</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .item { padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 10px; }
+        .item.investment { border-left: 4px solid #2ecc71; background: #f8fff8; }
+        .item.innovation { border-left: 4px solid #3498db; background: #f8faff; }
+        .title { font-weight: bold; font-size: 1.1em; margin-bottom: 5px; }
+        .source { color: #666; font-size: 0.9em; margin-bottom: 5px; }
+        .tags { margin: 5px 0; }
+        .tag { display: inline-block; background: #e0e0e0; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; margin-right: 5px; }
+        .tag.investment { background: #d4f1d4; color: #27ae60; }
+        .tag.technology { background: #d4e6f1; color: #2980b9; }
+        .tag.sanitation { background: #f1d4d4; color: #c0392b; }
+        .tag.hygiene { background: #f1e6d4; color: #d35400; }
+        .topbar { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc; }
+        .right { float: right; }
+        form { margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 5px; }
+        input, textarea, select { width: 100%; max-width: 400px; margin: 5px 0; padding: 8px; }
+        button { background: #2c3e50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #34495e; }
+        .search-section { background: #ecf0f1; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .filters { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        .filter-group { flex: 1; min-width: 200px; }
+        .stats { background: #34495e; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px; }
+        .investment-opportunity { background: #e8f5e8; border: 2px solid #27ae60; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .opportunity-badge { background: #27ae60; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1>💧 WASH Investment Research Portal</h1>
+        <div class="right">
+            <a href="/">Home</a> | 
+            <a href="/proposals">Proposals</a> |
+            <a href="/archived">Archive</a> |
+            <a href="/trigger-fetch">Fetch New</a> |
+            <a href="/upload-proposal">Upload Proposal</a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    <!-- WASH Investment Search Section -->
+    <div class="search-section">
+        <h2>🔍 WASH Investment Opportunities</h2>
+        <form method="GET" action="/">
+            <div class="filters">
+                <div class="filter-group">
+                    <label><strong>Search Keywords:</strong><br>
+                        <input type="text" name="q" placeholder="water purification, sanitation, hygiene..." />
+                    </label>
+                </div>
+                <div class="filter-group">
+                    <label><strong>Investment Stage:</strong><br>
+                        <select name="stage">
+                            <option value="">All Stages</option>
+                            <option value="seed">Seed/Early Stage</option>
+                            <option value="growth">Growth Stage</option>
+                            <option value="public">Public Companies</option>
+                            <option value="government">Government Projects</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="filter-group">
+                    <label><strong>WASH Category:</strong><br>
+                        <select name="category">
+                            <option value="">All Categories</option>
+                            <option value="water">💧 Water Purification</option>
+                            <option value="sanitation">🚽 Sanitation Systems</option>
+                            <option value="hygiene">🧼 Hygiene Products</option>
+                            <option value="infrastructure">🏗️ Water Infrastructure</option>
+                            <option value="technology">🔬 Monitoring Technology</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <button type="submit">Search WASH Opportunities</button>
+            <button type="button" onclick="location.href='/'">Clear Filters</button>
+        </form>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats">
+        <strong>Research Database:</strong> 
+        {{.TotalItems}} total items • 
+        {{.WASHItems}} WASH-related • 
+        {{.InvestmentItems}} investment opportunities
+    </div>
+
+    <!-- Investment Opportunities Highlight -->
+    {{if .HasInvestmentOpportunities}}
+    <div class="investment-opportunity">
+        <h3>🎯 High-Potential WASH Investment Opportunities</h3>
+        <p>The following items show strong potential for investment based on market trends and technology innovation.</p>
+    </div>
+    {{end}}
+
+    <!-- Research Items -->
+    <h2>📚 Research Items</h2>
+    
+    {{ if .Items }}
+        {{ range .Items }}
+            <div class="item {{if .IsInvestment}}investment{{else if .IsInnovation}}innovation{{end}}">
+                <div class="title">
+                    <a href="{{ .URL }}" target="_blank">{{ .Title }}</a>
+                    {{if .IsInvestment}}<span class="opportunity-badge">Investment Opportunity</span>{{end}}
+                </div>
+                <div class="source">{{ .Source }} — {{ .FetchedAt.Format "Jan 02, 2006" }}</div>
+                
+                <div class="tags">
+                    {{range .Tags}}
+                        <span class="tag {{.}}">{{.}}</span>
+                    {{end}}
+                </div>
+                
+                {{ if .Summary }}
+                <div class="summary">{{ .Summary }}</div>
+                {{ end }}
+                
+                {{if .InvestmentPotential}}
+                <div style="margin-top: 8px; padding: 8px; background: #fff3cd; border-radius: 4px;">
+                    <strong>Investment Potential:</strong> {{.InvestmentPotential}}
+                </div>
+                {{end}}
+            </div>
+        {{ end }}
+    {{ else }}
+        <p>No items found matching your criteria. Try <a href="/trigger-fetch">fetching new research</a> or <a href="#add-form">adding items manually</a>.</p>
+    {{ end }}
+
+    <!-- Add Item Form -->
+    <h2 id="add-form">➕ Add WASH Research Item</h2>
+    <form method="POST" action="/add">
+        <div>
+            <label><strong>Title:</strong><br>
+                <input type="text" name="title" required placeholder="e.g., New Water Purification Technology Startup Seeking Funding" />
+            </label>
+        </div>
+        <div>
+            <label><strong>URL:</strong><br>
+                <input type="url" name="url" required placeholder="https://..." />
+            </label>
+        </div>
+        <div>
+            <label><strong>WASH Category:</strong><br>
+                <select name="wash_category">
+                    <option value="water">💧 Water Purification</option>
+                    <option value="sanitation">🚽 Sanitation Systems</option>
+                    <option value="hygiene">🧼 Hygiene Products</option>
+                    <option value="infrastructure">🏗️ Water Infrastructure</option>
+                    <option value="technology">🔬 Monitoring Technology</option>
+                    <option value="other">Other WASH</option>
+                </select>
+            </label>
+        </div>
+        <div>
+            <label><strong>Investment Stage:</strong><br>
+                <select name="investment_stage">
+                    <option value="">Not Specified</option>
+                    <option value="seed">Seed/Early Stage</option>
+                    <option value="growth">Growth Stage</option>
+                    <option value="public">Public Company</option>
+                    <option value="government">Government Project</option>
+                </select>
+            </label>
+        </div>
+        <div>
+            <label><strong>Summary:</strong><br>
+                <textarea name="summary" rows="4" placeholder="Describe the technology, market potential, funding needs..."></textarea>
+            </label>
+        </div>
+        <button type="submit">Add WASH Research Item</button>
+    </form>
+
+    <!-- WASH Investment Resources -->
+    <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+        <h3>🌍 WASH Investment Focus Areas</h3>
+        <ul>
+            <li><strong>Water Purification:</strong> Filtration systems, desalination, UV treatment, membrane technology</li>
+            <li><strong>Sanitation:</strong> Toilet technology, waste treatment, circular economy solutions</li>
+            <li><strong>Hygiene:</strong> Soap alternatives, handwashing stations, behavioral change technologies</li>
+            <li><strong>Infrastructure:</strong> Pipe monitoring, leak detection, smart water grids</li>
+            <li><strong>Monitoring:</strong> Water quality sensors, remote monitoring, data analytics</li>
+        </ul>
+    </div>
+</body>
+</html>

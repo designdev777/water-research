@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Investment Proposals - WASH Research</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .topbar { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc; }
+        .right { float: right; }
+        .proposals-section { margin: 20px 0; }
+        .proposal-item { 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin: 15px 0; 
+            background: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .proposal-item h3 { 
+            margin: 0 0 10px 0; 
+            color: #2c3e50; 
+            font-size: 1.3em;
+        }
+        .proposal-description { 
+            color: #666; 
+            margin: 10px 0; 
+            line-height: 1.5;
+        }
+        .proposal-meta { 
+            font-size: 0.9em; 
+            color: #888; 
+            display: flex; 
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        .upload-section { 
+            background: #f8f9fa; 
+            padding: 25px; 
+            border-radius: 8px; 
+            margin: 30px 0;
+            border: 1px solid #ddd;
+        }
+        .upload-section h2 { margin-top: 0; }
+        .upload-section form div { margin: 15px 0; }
+        input, textarea, select { 
+            width: 100%; 
+            max-width: 500px; 
+            margin: 5px 0; 
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button { 
+            background: #2c3e50; 
+            color: white; 
+            padding: 12px 25px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 1em;
+        }
+        button:hover { background: #34495e; }
+        .empty-state { 
+            text-align: center; 
+            padding: 40px; 
+            color: #666;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .view-proposal-btn {
+            background: #27ae60;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .view-proposal-btn:hover {
+            background: #219653;
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <h1>💼 Investment Proposals</h1>
+        <div class="right">
+            <a href="/">Research Home</a> | 
+            <a href="/proposals">All Proposals</a> |
+            <a href="/upload-proposal">Upload New</a> |
+            <a href="/archived">Archive</a>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+    {{if .ShowProposals}}
+    <div class="proposals-section">
+        <h2>📋 Investment Proposals</h2>
+        
+        {{if .Proposals}}
+            <div class="proposals-list">
+                {{range .Proposals}}
+                <div class="proposal-item">
+                    <h3>{{.Title}}</h3>
+                    {{if .Description}}
+                    <p class="proposal-description">{{.Description}}</p>
+                    {{end}}
+                    <a href="/proposal?id={{.ID}}" target="_blank" class="view-proposal-btn">
+                        📄 View Full Proposal
+                    </a>
+                    <div class="proposal-meta">
+                        <span class="file-name"><strong>File:</strong> {{.FileName}}</span>
+                        <span class="created-at"><strong>Uploaded:</strong> {{.CreatedAt.Format "January 2, 2006"}}</span>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        {{else}}
+            <div class="empty-state">
+                <h3>No Proposals Yet</h3>
+                <p>Get started by uploading your first investment proposal.</p>
+                <a href="/upload-proposal" style="display: inline-block; margin-top: 15px;">
+                    <button>Upload First Proposal</button>
+                </a>
+            </div>
+        {{end}}
+    </div>
+    {{end}}
+
+    {{if .ShowUploadForm}}
+    <div class="upload-section">
+        <h2>📤 Upload Investment Proposal</h2>
+        <form method="POST" action="/upload-proposal" enctype="multipart/form-data">
+            <div>
+                <label><strong>Proposal Title:</strong></label><br>
+                <input type="text" name="title" placeholder="e.g., Water Purification Startup Investment" required>
+            </div>
+            <div>
+                <label><strong>Description:</strong></label><br>
+                <textarea name="description" rows="4" placeholder="Brief description of the investment opportunity..."></textarea>
+            </div>
+            <div>
+                <label><strong>HTML Proposal File:</strong></label><br>
+                <input type="file" name="proposalFile" accept=".html" required>
+                <p style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                    Upload an HTML file containing your investment proposal. The file should include all interactive elements, charts, and mobile-responsive design.
+                </p>
+            </div>
+            <button type="submit">📤 Upload Proposal</button>
+            <a href="/proposals" style="margin-left: 15px;">← Back to Proposals</a>
+        </form>
+    </div>
+    {{end}}
+</body>
+</html>

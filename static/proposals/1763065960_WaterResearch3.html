@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaPulse Analytics | Seed Investment Proposal</title>
+    <style>
+        :root {
+            --primary: #0056b3;
+            --secondary: #28a745;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --accent: #17a2b8;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        .tagline {
+            font-size: 1.2em;
+            color: var(--dark);
+            font-weight: bold;
+        }
+        .contact-bar {
+            background: var(--primary);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin: 10px -20px;
+            border-radius: 5px;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        nav a {
+            padding: 10px 15px;
+            background: var(--light);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+        nav a:hover, .section-title:hover {
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+        }
+        .section {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .section-title {
+            padding: 15px;
+            background: var(--light);
+            margin: 0;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-content {
+            padding: 0 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+        .section.active .section-content {
+            padding: 15px;
+            max-height: 2000px;
+        }
+        .section.active .indicator::after {
+            content: "−";
+        }
+        .indicator::after {
+            content: "+";
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: var(--light);
+        }
+        .highlight {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            margin: 15px 0;
+        }
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .roi-card {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            border-top: 4px solid var(--secondary);
+        }
+        .roi-card h3 {
+            margin-top: 0;
+            color: var(--dark);
+        }
+        .flowchart {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .flowchart img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .tab-container {
+            margin: 20px 0;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: var(--light);
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background: white;
+            border-color: #ddd;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+        }
+        .tab-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .vcard-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+            transition: background 0.3s ease;
+        }
+        .vcard-btn:hover {
+            background: #218838;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AquaPulse Analytics</h1>
+            <p class="tagline">From £10k Seed to High-Yield Exit: A Smart Water Infrastructure Play</p>
+            <div class="contact-bar">
+                <strong>Investment Opportunity:</strong> Seed Funding for Pilot & IP Development | <strong>Ask:</strong> £10,000
+            </div>
+        </header>
+
+        <nav>
+            <a href="#thesis">The Investment Thesis</a>
+            <a href="#plan">The £10k Plan</a>
+            <a href="#roi">ROI & Exit Strategy</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="section" id="thesis-section">
+            <div class="section-title" onclick="toggleSection('thesis')">
+                The Investment Thesis: Solving a $1B+ Problem
+                <span class="indicator"></span>
+            </div>
+            <div class="section-content" id="thesis-content">
+                <p>AquaPulse Analytics is a tech-enabled service company targeting the chronic failure of rural water infrastructure in Sub-Saharan Africa. We turn a cost center into a profitable, data-driven asset.</p>
+
+                <div class="highlight">
+                    <strong>The Core Problem:</strong> 30-40% of rural handpumps in Africa are non-functional at any given time, representing a <strong>multi-billion dollar</strong> wasted investment and denying millions of clean water.
+                </div>
+
+                <p><strong>The AquaPulse Solution:</strong> A low-cost, open-source hardware and software platform that provides <strong>real-time, remote monitoring</strong> of water usage and pump performance. This enables:</p>
+                <ul>
+                    <li><strong>Predictive Maintenance:</strong> Fixing pumps <em>before</em> they break.</li>
+                    <li><strong>Data-Driven Operations:</strong> Optimizing maintenance routes and resource allocation.</li>
+                    <li><strong>Guaranteed Uptime:</strong> Offering "Water as a Service" to governments and NGOs.</li>
+                </ul>
+
+                <div class="flowchart">
+                    <p><strong>The Path to a High-Value Exit</strong></p>
+                    <!-- A simple mermaid flowchart would be ideal here, but for pure HTML/CSS/JS, we use an image placeholder -->
+                    <img src="https://i.imgur.com/placeholder.png" alt="Flowchart: £10k Seed -> Pilot & IP -> Proven Model -> Acquisition by Major Player" id="flowchart-img">
+                    <p><em>Diagram: The capital-light path from seed funding to a lucrative acquisition.</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="plan-section">
+            <div class="section-title" onclick="toggleSection('plan')">
+                The £10,000 Seed Plan: Building the Foundation for a Sale
+                <span class="indicator"></span>
+            </div>
+            <div class="section-content" id="plan-content">
+                <p>This seed capital is not for R&D; it's for <strong>deploying a proven, open-source technology</strong> to create an invaluable, market-tested asset: a functioning, data-generating network with a proven operational model.</p>
+
+                <div class="tab-container">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('budget', 'planned')">Planned Budget</div>
+                        <div class="tab" onclick="switchTab('budget', 'milestones')">Key Milestones</div>
+                    </div>
+                    <div class="tab-content active" id="planned-tab">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Allocation</th>
+                                    <th>Strategic Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Hardware for 15 Units</td>
+                                    <td>£3,500</td>
+                                    <td>Creates the physical, scalable asset and proves unit economics.</td>
+                                </tr>
+                                <tr>
+                                    <td>Field Deployment & Local Tech Training</td>
+                                    <td>£2,500</td>
+                                    <td>Builds the operational model and local partner network, a key value-driver for acquirers.</td>
+                                </tr>
+                                <tr>
+                                    <td>Data Connectivity & Cloud Platform (12 mo.)</td>
+                                    <td>£2,000</td>
+                                    <td>Generates the crucial 12-month performance dataset to validate the business case.</td>
+                                </tr>
+                                <tr>
+                                    <td>Project Management & IP Documentation</td>
+                                    <td>£2,000</td>
+                                    <td>Packages the entire system, processes, and data into a sellable "playbook."</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-content" id="milestones-tab">
+                        <ul>
+                            <li><strong>Month 3:</strong> 15 sensor units deployed and operational in Northern Ghana.</li>
+                            <li><strong>Month 6:</strong> First predictive maintenance alert successfully actioned; initial 6-month dataset compiled.</li>
+                            <li><strong>Month 9:</strong> "Playbook" for scaling drafted, including partner MOUs and unit cost projections.</li>
+                            <li><strong>Month 12:</strong> Full-year impact report published, demonstrating >90% pump uptime and a clear ROI for operators.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="roi-section">
+            <div class="section-title" onclick="toggleSection('roi')">
+                ROI & Exit Strategy: The High-Yield Pathways
+                <span class="section-title" onclick="toggleSection('roi')">
+                <span class="indicator"></span>
+            </div>
+            <div class="section-content" id="roi-content">
+                <p>The goal is not to build a billion-dollar company with the seed round. It is to use £10,000 to create an asset so compelling that it demands acquisition or licensing by a major player within 18-24 months.</p>
+
+                <div class="roi-grid">
+                    <div class="roi-card">
+                        <h3>Pathway 1: Government License</h3>
+                        <p><strong>Target:</strong> National Government (e.g., Ghana's CWSA).</p>
+                        <p><strong>Deal:</strong> One-time license fee of £250k-£500k for the IP, playbook, and training to roll out nationally.</p>
+                        <p><strong>Seed ROI Multiplier:</strong> 25x - 50x</p>
+                    </div>
+                    <div class="roi-card">
+                        <h3>Pathway 2: Private Sector Acquisition</h3>
+                        <p><strong>Target:</strong> Major WASH NGO (WaterAid, World Vision) or Water Tech Firm.</p>
+                        <p><strong>Deal:</strong> Acquisition for £500k-£1.5M to integrate the proven system into their global operations.</p>
+                        <p><strong>Seed ROI Multiplier:</strong> 50x - 150x</p>
+                    </div>
+                    <div class="roi-card">
+                        <h3>Pathway 3: Social Impact Franchise</h3>
+                        <p><strong>Target:</strong> Social Enterprise Fund.</p>
+                        <p><strong>Deal:</strong> Sell regional franchise licenses across Africa, creating a recurring revenue stream valued at £2M+.</p>
+                        <p><strong>Seed ROI Multiplier:</strong> 200x+</p>
+                    </div>
+                </div>
+
+                <div class="highlight">
+                    <strong>The Investor Upside:</strong> For a £10,000 investment, a conservative exit at £500,000 represents a <strong>50x return</strong>. This is achievable because the seed capital is used to de-risk the technology and prove the model, making it an irresistible, low-risk acquisition for larger, slower-moving organizations.
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="contact-section">
+            <div class="section-title" onclick="toggleSection('contact')">
+                Next Steps & Contact
+                <span class="indicator"></span>
+            </div>
+            <div class="section-content" id="contact-content" style="text-align: center;">
+                <p>We are seeking strategic seed investors who understand the high-yield potential of proving a model in a massive market.</p>
+                <p><strong>Let's build a valuable asset together.</strong></p>
+
+                <a href="#" class="vcard-btn" onclick="addToContacts()">+ Add Project Lead to Contacts</a>
+
+                <p><strong>For the full detailed proposal and technical documentation, please contact:</strong></p>
+                <p>
+                    [Project Lead Name]<br>
+                    AquaPulse Analytics<br>
+                    Email: [contact@email.com]<br>
+                    Tel: [+44 XXXX XXX XXX]
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <p>AquaPulse Analytics | Confidential Investment Memorandum | 2025</p>
+            <p><em>This document is for informational purposes and does not constitute a formal investment offer.</em></p>
+        </footer>
+    </div>
+
+    <script>
+        // Toggle section content
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId + '-section');
+            const content = document.getElementById(sectionId + '-content');
+            section.classList.toggle('active');
+        }
+
+        // Switch between tabs
+        function switchTab(containerId, tabId) {
+            // Hide all tab contents and deactivate all tabs in this container
+            const container = document.getElementById(containerId + '-tab').parentNode;
+            const allContents = container.querySelectorAll('.tab-content');
+            const allTabs = container.querySelectorAll('.tab');
+
+            allContents.forEach(content => content.classList.remove('active'));
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show the selected tab content and activate the tab
+            document.getElementById(tabId + '-tab').classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Simulate "Add to Contacts" functionality
+        function addToContacts() {
+            alert("To add this contact, please save this information manually:\n\nName: AquaPulse Project Lead\nEmail: contact@email.com\nPhone: +44 XXXX XXX XXX");
+            // In a more advanced version, this could use the Contacts Manager API.
+        }
+
+        // Initialize the page with the first section open
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleSection('thesis'); // Start with the thesis open
+        });
+    </script>
+</body>
+</html>

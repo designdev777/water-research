@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Water Tech Research</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: 20px auto; }
+    .item { padding: 10px; border-bottom: 1px solid #eee; }
+    .title { font-weight: bold; font-size: 1.1em; }
+    .source { color: #666; font-size: 0.9em; }
+    .topbar { margin-bottom: 20px; }
+    .right { float: right; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>Water Technology Research</h1>
+    <div class="right">
+      <a href="/">Home</a> | <a href="/trigger-fetch">Trigger Fetch</a>
+    </div>
+  </div>
+  {{ template "content" . }}
+</body>
+</html>
+

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lake Victoria Water Tech Seed Investment</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --secondary: #28b463;
+            --accent: #f39c12;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #7f8c8d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background-color: rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        section {
+            padding: 40px 0;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            border-left: 5px solid var(--secondary);
+            padding-left: 15px;
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            color: var(--secondary);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .highlight {
+            background-color: rgba(40, 180, 99, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .metric-label {
+            font-size: 1rem;
+            color: var(--gray);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background: #239b56;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .budget-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .budget-table th, .budget-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .budget-table th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .budget-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .budget-table tr:hover {
+            background-color: #e8f6ef;
+        }
+        
+        .roi-chart {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #e8f6ef, #d1f2eb);
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .roi-bar {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
+            background: var(--secondary);
+            border-radius: 5px 5px 0 0;
+            transition: height 1s ease;
+        }
+        
+        .roi-label {
+            position: absolute;
+            bottom: -25px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+        
+        .contact-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .contact-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            border: 5px solid var(--secondary);
+        }
+        
+        .contact-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .contact-title {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .collapsible {
+            cursor: pointer;
+            padding: 15px;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            background-color: white;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .collapsible:after {
+            content: '+';
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .collapsible.active:after {
+            content: '-';
+        }
+        
+        .content {
+            padding: 0 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: white;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .tab-container {
+            margin: 20px 0;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--secondary);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                width: 80%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">AquaVentures Africa</div>
+            <div class="tagline">Transforming Wastewater into Wealth in Lake Victoria</div>
+            <nav>
+                <a href="#thesis" class="active">Investment Thesis</a>
+                <a href="#plan">Execution Plan</a>
+                <a href="#roi">ROI Projection</a>
+                <a href="#team">Our Team</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="container">
+            <h1>£10,000 Seed Investment Opportunity</h1>
+            <p style="text-align: center; font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px;">High-yield water technology venture targeting 10-20x returns through government licensing and private company sale in East Africa's largest market</p>
+            
+            <div class="grid">
+                <div class="metric">
+                    <div class="metric-value">10-20x</div>
+                    <div class="metric-label">Projected ROI</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">30M+</div>
+                    <div class="metric-label">People Impacted</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">18-24</div>
+                    <div class="metric-label">Months to Exit</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="#contact" class="btn">Express Interest</a>
+                <a href="#thesis" class="btn btn-outline">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="thesis">
+        <div class="container">
+            <h2>Investment Thesis</h2>
+            
+            <button class="collapsible">The Problem: Eutrophication Crisis in Lake Victoria</button>
+            <div class="content">
+                <div class="card">
+                    <p>Lake Victoria, Africa's largest lake and the world's second-largest freshwater body, is experiencing severe eutrophication driven by:</p>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        <li>Rapid urbanization with inadequate sanitation infrastructure</li>
+                        <li>Direct discharge of nutrient-rich wastewater (N & P)</li>
+                        <li>Harmful algal blooms creating hypoxic "dead zones"</li>
+                        <li>Devastating impact on fisheries, water security, and public health</li>
+                    </ul>
+                    <p>This creates a $500M+ annual economic impact across Kenya, Uganda, and Tanzania.</p>
+                </div>
+            </div>
+            
+            <button class="collapsible">The Solution: Decentralized Nutrient Recovery Systems</button>
+            <div class="content">
+                <div class="card">
+                    <p>Our approach adapts proven wastewater treatment principles to the African context:</p>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        <li><strong>Containerized Treatment Units:</strong> Modular systems for rapid deployment</li>
+                        <li><strong>Nutrient Recovery Technology:</strong> Extracting phosphorus and nitrogen as fertilizer</li>
+                        <li><strong>Circular Economy Model:</strong> Transforming waste into valuable agricultural inputs</li>
+                        <li><strong>Appropriate Scale:</strong> Targeting peri-urban areas and institutions</li>
+                    </ul>
+                    <p>This creates both environmental remediation and economic value.</p>
+                </div>
+            </div>
+            
+            <button class="collapsible">Market Opportunity & Competitive Advantage</button>
+            <div class="content">
+                <div class="card">
+                    <p><strong>Total Addressable Market:</strong> $150M+ across East Africa for decentralized wastewater solutions</p>
+                    <p><strong>Serviceable Available Market:</strong> $45M in the Lake Victoria basin alone</p>
+                    
+                    <div class="highlight">
+                        <h3>Our Unique Positioning</h3>
+                        <p>Unlike international competitors, we offer:</p>
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>Context-appropriate technology at 40-60% lower cost</li>
+                            <li>Established partnerships with local governments and NGOs</li>
+                            <li>Dual revenue streams (service fees + fertilizer sales)</li>
+                            <li>Proven pilot results from similar African deployments</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="plan">
+        <div class="container">
+            <h2>Execution Plan</h2>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="phase1">Phase 1: Seed (£10K)</div>
+                    <div class="tab" data-tab="phase2">Phase 2: Pilot (£150K)</div>
+                    <div class="tab" data-tab="phase3">Phase 3: Scale (£1.5M)</div>
+                    <div class="tab" data-tab="phase4">Phase 4: Exit (18-24 mo)</div>
+                </div>
+                
+                <div id="phase1" class="tab-content active">
+                    <h3>Seed Phase: Foundation & Validation (3 Months)</h3>
+                    <p>With the £10,000 seed investment, we will:</p>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        <li>Secure formal partnerships with 2-3 county governments in Kenya</li>
+                        <li>Conduct detailed site assessments at 5+ high-potential locations</li>
+                        <li>Validate technology adaptation with local engineering partners</li>
+                        <li>Develop comprehensive financial models and ROI projections</li>
+                        <li>Create a compelling investment deck for the £150K pilot round</li>
+                    </ul>
+                    
+                    <h4>Seed Investment Allocation</h4>
+                    <table class="budget-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Technical Validation & Engineering</td>
+                                <td>£3,500</td>
+                                <td>35%</td>
+                            </tr>
+                            <tr>
+                                <td>Stakeholder Engagement & Travel</td>
+                                <td>£4,000</td>
+                                <td>40%</td>
+                            </tr>
+                            <tr>
+                                <td>Business Development & Proposal</td>
+                                <td>£2,000</td>
+                                <td>20%</td>
+                            </tr>
+                            <tr>
+                                <td>Contingency</td>
+                                <td>£500</td>
+                                <td>5%</td>
+                            </tr>
+                            <tr style="font-weight: bold;">
+                                <td>Total</td>
+                                <td>£10,000</td>
+                                <td>100%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="phase2" class="tab-content">
+                    <h3>Pilot Phase: Demonstration & Traction (9 Months)</h3>
+                    <p>With £150,000 follow-on funding, we will:</p>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        <li>Deploy 3-5 pilot systems at strategic locations</li>
+                        <li>Generate 12+ months of operational and impact data</li>
+                        <li>Secure 2+ municipal service contracts</li>
+                        <li>Validate fertilizer production and sales model</li>
+                        <li>Build a pipeline of 10+ potential clients</li>
+                    </ul>
+                    <p>This phase aims to demonstrate both technical efficacy and commercial viability.</p>
+                </div>
+                
+                <div id="phase3" class="tab-content">
+                    <h3>Scale Phase: Regional Expansion (12 Months)</h3>
+                    <p>With £1.5M Series A funding, we will:</p>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        <li>Deploy 50+ systems across Kenya, Uganda, and Tanzania</li>
+                        <li>Establish local manufacturing and assembly capacity</li>
+                        <li>Build a 15-person team with regional presence</li>
+                        <li>Secure 5+ government licensing agreements</li>
+                        <li>Generate £500K+ in annual recurring revenue</li>
+                    </ul>
+                    <p>This positions us for acquisition by major water technology firms or public offering.</p>
+                </div>
+                
+                <div id="phase4" class="tab-content">
+                    <h3>Exit Phase: Liquidity Event (18-24 Months)</h3>
+                    <p>Targeted exit strategies include:</p>
+                    <ul style="margin: 15px 0 15px 20px;">
+                        <li><strong>Strategic Acquisition:</strong> By global water technology companies (Veolia, SUEZ, Xylem) seeking African market entry</li>
+                        <li><strong>Government Licensing:</strong> Sale of technology IP to national governments for widespread deployment</li>
+                        <li><strong>Regional Franchise Model:</strong> Licensing our system to operators across Africa</li>
+                        <li><strong>Public Offering:</strong> Potential listing on Nairobi Securities Exchange or similar</li>
+                    </ul>
+                    <div class="highlight">
+                        <p>Based on comparable exits in the environmental technology space, we project a 10-20x return on the initial £10,000 seed investment within 18-24 months.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roi">
+        <div class="container">
+            <h2>Return on Investment Projection</h2>
+            
+            <div class="card">
+                <h3>Financial Projections</h3>
+                <p>Based on conservative estimates and comparable ventures in emerging markets:</p>
+                
+                <div class="roi-chart">
+                    <!-- This would be a dynamic chart in a real implementation -->
+                    <div style="position: absolute; left: 15%; height: 30%;" class="roi-bar">
+                        <div class="roi-label">Seed £10K</div>
+                    </div>
+                    <div style="position: absolute; left: 30%; height: 50%;" class="roi-bar">
+                        <div class="roi-label">Pilot £150K</div>
+                    </div>
+                    <div style="position: absolute; left: 45%; height: 80%;" class="roi-bar">
+                        <div class="roi-label">Scale £1.5M</div>
+                    </div>
+                    <div style="position: absolute; left: 65%; height: 200%;" class="roi-bar">
+                        <div class="roi-label">Exit £100K-£200K</div>
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <div class="metric">
+                        <div class="metric-value">10-20x</div>
+                        <div class="metric-label">Projected ROI</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">18-24 mo</div>
+                        <div class="metric-label">Time to Exit</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">£100-200K</div>
+                        <div class="metric-label">Return on £10K</div>
+                    </div>
+                </div>
+                
+                <div class="highlight">
+                    <h4>Key Value Drivers</h4>
+                    <ul style="margin: 10px 0 10px 20px;">
+                        <li>Proven technology adaptation for African context</li>
+                        <li>Dual revenue streams (service fees + product sales)</li>
+                        <li>Strong government and NGO partnerships</li>
+                        <li>Scalable model across East African markets</li>
+                        <li>Alignment with UN Sustainable Development Goals</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team">
+        <div class="container">
+            <h2>Our Team</h2>
+            
+            <div class="grid">
+                <div class="contact-card">
+                    <div class="contact-photo" style="background-color: #e8f6ef;"></div>
+                    <div class="contact-name">Dr. Amina Okeke</div>
+                    <div class="contact-title">Water Technology Specialist</div>
+                    <p>PhD in Environmental Engineering, 12 years experience in African water projects, former consultant to World Bank.</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-photo" style="background-color: #e8f6ef;"></div>
+                    <div class="contact-name">James Mwangi</div>
+                    <div class="contact-title">East Africa Business Development</div>
+                    <p>15 years in infrastructure development across Kenya, Uganda, and Tanzania, extensive government networks.</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-photo" style="background-color: #e8f6ef;"></div>
+                    <div class="contact-name">Sarah Chen</div>
+                    <div class="contact-title">Finance & Operations</div>
+                    <p>Former investment banker with focus on emerging markets, MBA from London Business School.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Express Interest</h2>
+            
+            <div class="card">
+                <p style="text-align: center; margin-bottom: 20px;">Interested in this seed investment opportunity? Contact us for the full investment memorandum.</p>
+                
+                <div style="text-align: center;">
+                    <a href="#" class="btn" id="addContact">Add to Contacts</a>
+                    <a href="mailto:invest@aquaventures.africa" class="btn btn-outline">Email Us</a>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <p><strong>Next Steps:</strong></p>
+                    <p>We are scheduling meetings with qualified investors for the first week of next month.</p>
+                    <p>Seed round closes: 30 days from first commitment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="logo" style="color: white; margin-bottom: 20px;">AquaVentures Africa</div>
+            
+            <div class="footer-links">
+                <a href="#thesis">Investment Thesis</a>
+                <a href="#plan">Execution Plan</a>
+                <a href="#roi">ROI Projection</a>
+                <a href="#team">Our Team</a>
+                <a href="#contact">Contact</a>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 AquaVentures Africa. All rights reserved. | This document is confidential and intended for qualified investors only.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Collapsible sections
+        const collapsibles = document.querySelectorAll('.collapsible');
+        
+        collapsibles.forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+        
+        // Tab functionality
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-tab');
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(tc => tc.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(target).classList.add('active');
+            });
+        });
+        
+        // Navigation highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Add to contacts functionality
+        document.getElementById('addContact').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create vCard content
+            const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:AquaVentures Africa
+ORG:AquaVentures Africa
+TITLE:Lake Victoria Water Tech Project
+TEL;TYPE=WORK,VOICE:+254700123456
+EMAIL:invest@aquaventures.africa
+URL:https://aquaventures.africa
+NOTE:£10,000 Seed Investment Opportunity - Lake Victoria Water Tech
+END:VCARD`;
+            
+            // Create download link
+            const blob = new Blob([vCard], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'AquaVentures Africa.vcf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Contact card downloaded. You can now import it to your contacts.');
+        });
+        
+        // Initialize first collapsible as open
+        if (collapsibles.length > 0) {
+            collapsibles[0].click();
+        }
+    </script>
+</body>
+</html>

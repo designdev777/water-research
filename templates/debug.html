@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug - Water Research</title>
+</head>
+<body>
+    <h1>Debug Info</h1>
+    <p>Items count: {{len .Items}}</p>
+    <ul>
+    {{range .Items}}
+        <li>{{.Title}} - {{.Source}}</li>
+    {{else}}
+        <li>No items found</li>
+    {{end}}
+    </ul>
+    <a href="/">Back to main page</a>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaIntel: Groundwater Mapping Investment Proposal</title>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --secondary: #3498db;
+            --accent: #2ecc71;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0 15px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            background-color: white;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 120px;
+            z-index: 99;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            padding: 8px 15px;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 25px 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        
+        section.active {
+            display: block;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 15px 0 10px;
+        }
+        
+        .card {
+            background-color: var(--light);
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .highlight {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .phase-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .phase {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .phase-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .phase-content {
+            padding: 15px;
+        }
+        
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .budget-total {
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary);
+            margin-top: 10px;
+        }
+        
+        .roi-table td:last-child {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .contact-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px 0;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 750px;
+                margin: 0 auto;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .phase-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .phase {
+                flex: 1 1 calc(50% - 10px);
+                min-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AquaIntel: Groundwater Mapping Investment</h1>
+            <p class="tagline">A £10,000 Proof-of-Concept to De-Risk Water Exploration in Africa for High-Yield Returns</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container nav-container">
+            <div class="nav-item active" data-target="thesis">Investment Thesis</div>
+            <div class="nav-item" data-target="plan">Strategic Plan</div>
+            <div class="nav-item" data-target="budget">Budget</div>
+            <div class="nav-item" data-target="roi">ROI & Exit</div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <section id="thesis" class="active">
+            <h2>Investment Thesis</h2>
+            
+            <div class="card">
+                <p><strong>Core Strategy:</strong> Use £10,000 to generate irrefutable, field-validated proof that our GIS-MCDA model dramatically reduces the cost and risk of drilling for high-value customers.</p>
+            </div>
+            
+            <h3>The Opportunity</h3>
+            <p>In water-stressed regions like the Lake Chad Basin, high-fidelity, actionable data on groundwater is a valuable and currently undersupplied commodity. We're not selling water; we're selling the knowledge of where to find it efficiently.</p>
+            
+            <div class="highlight">
+                <h3>Target Markets</h3>
+                <ul>
+                    <li><strong>AgTech & Commercial Farming:</strong> De-risking land acquisition and drilling campaigns</li>
+                    <li><strong>Mining Companies:</strong> Securing water supply for remote operations</li>
+                    <li><strong>Government & NGOs:</strong> Improving success rates of public water projects</li>
+                    <li><strong>Insurance & Finance:</strong> Data for risk assessment in water-dependent ventures</li>
+                </ul>
+            </div>
+            
+            <h3>Why This Works</h3>
+            <p>The methodology combines NASA satellite data (GRACE, SRTM), geological surveys, and field validation to create predictive groundwater potential maps with >80% accuracy.</p>
+        </section>
+        
+        <section id="plan">
+            <h2>Strategic Plan: The Proof-of-Value Sprint</h2>
+            
+            <div class="phase-container">
+                <div class="phase">
+                    <div class="phase-header">
+                        <span>Phase 1</span>
+                        <span>Weeks 1-4</span>
+                    </div>
+                    <div class="phase-content">
+                        <h3>MVP & Partner Identification</h3>
+                        <p><strong>Budget: £2,000</strong></p>
+                        <ul>
+                            <li>Create high-resolution groundwater map for a specific high-value area</li>
+                            <li>Identify "Anchor Client" - commercial farm or mining company with immediate drilling needs</li>
+                            <li>Leverage free satellite data and open-source software</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <span>Phase 2</span>
+                        <span>Weeks 5-10</span>
+                    </div>
+                    <div class="phase-content">
+                        <h3>Pilot Sale & Data Validation</h3>
+                        <p><strong>Budget: £6,000</strong></p>
+                        <ul>
+                            <li>Offer client success-based pricing</li>
+                            <li>Fund on-site validation with local hydrogeologist</li>
+                            <li>Document drilling process and results meticulously</li>
+                            <li>Generate irrefutable case study data</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="phase">
+                    <div class="phase-header">
+                        <span>Phase 3</span>
+                        <span>Weeks 11-12</span>
+                    </div>
+                    <div class="phase-content">
+                        <h3>Packaging the Asset for Exit</h3>
+                        <p><strong>Budget: £2,000</strong></p>
+                        <ul>
+                            <li>Create professional "Data Room" with case study</li>
+                            <li>Develop compelling presentation materials</li>
+                            <li>Execute targeted outreach to potential acquirers</li>
+                            <li>Initiate sale process for proven IP</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="budget">
+            <h2>£10,000 Seed Budget Allocation</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Item</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">Phase 1</td>
+                        <td>Project Lead / Geospatial Analyst</td>
+                        <td>£1,500</td>
+                    </tr>
+                    <tr>
+                        <td>Data Acquisition & Software</td>
+                        <td>£500</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">Phase 2</td>
+                        <td>Success-Based Client Fee (payable only on success)</td>
+                        <td>£1,000</td>
+                    </tr>
+                    <tr>
+                        <td>Field Validation & Local Hydrogeologist</td>
+                        <td>£4,000</td>
+                    </tr>
+                    <tr>
+                        <td>Contingency for Additional Validation</td>
+                        <td>£1,000</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Phase 3</td>
+                        <td>Professional Report & Presentation Materials</td>
+                        <td>£1,000</td>
+                    </tr>
+                    <tr>
+                        <td>Targeted Outreach to Acquirers</td>
+                        <td>£1,000</td>
+                    </tr>
+                    <tr class="budget-total">
+                        <td colspan="2">TOTAL</td>
+                        <td>£10,000</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="card">
+                <p><strong>Note:</strong> This lean budget focuses exclusively on generating the proof needed for a high-value exit, avoiding unnecessary overhead and platform development costs at this stage.</p>
+            </div>
+        </section>
+        
+        <section id="roi">
+            <h2>ROI Projections & Exit Strategy</h2>
+            
+            <h3>Target Acquirers</h3>
+            <ul>
+                <li><strong>AgTech Companies:</strong> John Deere, Bayer, Yara</li>
+                <li><strong>Geospatial Intelligence Firms:</strong> Planet Labs, Esri, Airbus</li>
+                <li><strong>Specialized Consultancies:</strong> Hydrogeology or mining services firms</li>
+                <li><strong>Government Entities:</strong> National water authorities</li>
+            </ul>
+            
+            <h3>Return Scenarios</h3>
+            <table class="roi-table">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Outcome</th>
+                        <th>Projected Return</th>
+                        <th>Multiple</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Successful Pilot</td>
+                        <td>Validated case study with proven model</td>
+                        <td>£200k - £500k</td>
+                        <td>20x - 50x</td>
+                    </tr>
+                    <tr>
+                        <td>Government License</td>
+                        <td>National water authority license</td>
+                        <td>£250k</td>
+                        <td>25x</td>
+                    </tr>
+                    <tr>
+                        <td>Strategic Acquisition</td>
+                        <td>IP acquisition by AgTech company</td>
+                        <td>£300k - £600k</td>
+                        <td>30x - 60x</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="highlight">
+                <h3>Why This is a High-Yield Bet</h3>
+                <ul>
+                    <li><strong>Asymmetric Upside:</strong> 20x-50x potential return vs. limited downside</li>
+                    <li><strong>Capital Efficiency:</strong> Using client assets (drilling rigs) to validate our IP</li>
+                    <li><strong>De-risked for Acquirer:</strong> Proven solution is far more valuable than theoretical model</li>
+                    <li><strong>Extreme Focus:</strong> All resources directed toward single monetizable outcome</li>
+                </ul>
+            </div>
+            
+            <a href="#" class="contact-btn">Request Full Investment Memorandum</a>
+        </section>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>AquaIntel Groundwater Mapping Proposal | Confidential Investment Information</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation functionality
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    
+                    // Update active nav item
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show target section
+                    sections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Simple animation for phase cards
+            const phases = document.querySelectorAll('.phase');
+            phases.forEach(phase => {
+                phase.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
