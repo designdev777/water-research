@@ -54,15 +54,17 @@ func main() {
     "https://export.arxiv.org/rss/physics.chem-ph", // Chemical Physics (water treatment)
     
     // Research Institutions
-    "https://www.iwapublishing.com/rss/news",
+    //"https://www.iwapublishing.com/rss/news",
     "https://www.iwra.org/rss",
     "https://www.un-ihe.org/rss.xml",
     "https://www.nature.com/natwater.rss",
     "https://journals.plos.org/water/feed/atom",
-    "https://www.ncbi.nlm.nih.gov/pmc/journals/water/",
-    
+    //"https://www.ncbi.nlm.nih.gov/pmc/journals/water/",
+	//"https://pmc.ncbi.nlm.nih.gov/journals/water/",	
+
+		
     // Government & NGO Research
-    "https://www.epa.gov/newsreleases/search/rss/all/rss.xml",
+    //"https://www.epa.gov/newsreleases/search/rss/all/rss.xml",
     "https://www.usgs.gov/news/rss/topic/water",
     "https://www.unwater.org/rss/news",
 })
