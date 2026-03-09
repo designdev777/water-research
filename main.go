@@ -46,8 +46,8 @@ func main() {
     "https://www.mdpi.com/search/rss?q=wastewater",
     "https://www.frontiersin.org/journals/water/rss",
     "https://www.frontiersin.org/journals/environmental-science/rss",
-    //"https://feeds.feedburner.com/IWMI-publications",
-    "https://feeds.feedburner.com/iwmi-cgspace-ja",
+    "https://feeds.feedburner.com/IWMI-publications",
+    //"https://feeds.feedburner.com/iwmi-cgspace-ja",
     
     // Preprint Servers (cutting-edge research)
     "https://export.arxiv.org/rss/cs.CE", // Computational Engineering (water modeling)
